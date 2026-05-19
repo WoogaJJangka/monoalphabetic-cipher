@@ -1,0 +1,7 @@
+{
+  "editor.tabCompletion": "on",
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.suggest.insertMode": "replace",
+  "editor.suggest.localityBonus": true
+}
