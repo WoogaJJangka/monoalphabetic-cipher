@@ -1,54 +1,71 @@
-class Ciper:
+from collections import deque
+
+class Cipher:
     def __init__(self):
         self._key = ""
-        self._cipher_alphabet = ""
+        self._cipher_alphabets = ""
         self._alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     
-    def getKey(self):
+    def setKey(self, key : str):
+        self._key = key
+
+    def getCipherAlphabets(self):
         print(f"Key : {self._key}")
-        return self._cipher_alphabet
+        return self._cipher_alphabets
 
     def generate_cipher_alphabet(self, key):
         self._key = key
-        used_alphabets = set()
-        unused_alphabets = self._alphabets
-        temp_cipher_alphabet = ""
-        for char in self._key:
-            if char in used_alphabets:
-                continue
+        used = []
+        cipher = ""
+        for char in key:
+            if char not in used:
+                used.append(char)
+                cipher += char
             else:
-                temp_cipher_alphabet += char
-                used_alphabets.add(char)
-                unused_alphabets.remove(char)
+                continue
+
+        alphabets_d = deque(self._alphabets)
+        alphabets_d.rotate(-alphabets_d.index(cipher[-1]))
+
+        for char in list(alphabets_d):
+            if char not in used:
+                cipher += char
+            else:
+                continue
+
+        self._cipher_alphabets = cipher
         
-        for char in unused_alphabets:
-            temp_cipher_alphabet += char
 
-        self._cipher_alphabet = temp_cipher_alphabet
-
-    def encrypt(self, plaintext, key = None):
-        key = self._key if key is None else key
+    def encrypt(self, plaintext : str, key : str):
+        self.generate_cipher_alphabet(key)
         ciphertext = ""
 
         for plainchar in plaintext:
-            ciphertext += self._cipher_alphabet[self._alphabets.index(plainchar)]
-        
+            for alphabet in self._alphabets:
+                if plainchar == alphabet:
+                    ciphertext += self._cipher_alphabets[self._alphabets.index(alphabet)]
+                else:
+                    continue
+                
         print(f"ciphertext : {ciphertext}")
         return ciphertext
 
-    def decrypt(self, ciphertext, key = None):
-        key = self._key if key is None else key
+    def decrypt(self, ciphertext, key : str):
+        self.generate_cipher_alphabet(key)
         plaintext = ""
 
         for cipherchar in ciphertext:
-            plaintext += self._alphabets[self._cipher_alphabet.index(cipherchar)]
+            for cipher_alphabet in self._cipher_alphabets:
+                if cipherchar == cipher_alphabet:
+                    plaintext += self._alphabets[self._cipher_alphabets.index(cipher_alphabet)]
+                else:
+                    continue
         
         print(f"plaintext : {plaintext}")
         return plaintext
 
 
 if __name__ == "__main__":
-    test = Ciper()
-
-    test.generate_cipher_alphabet("halloword")
-    test.getKey()
+    c = Cipher()
+    c.encrypt("monoalphabeticsubstitution", "month")
+    c.decrypt("telxsehvthvmgpsiwhn", "value")
