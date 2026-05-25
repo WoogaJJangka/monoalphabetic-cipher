@@ -47,7 +47,7 @@ class Cipher:
                 else:
                     continue
                 
-        print(f"ciphertext : {ciphertext}")
+        print(f"ciphertext : {ciphertext} key : {self._key}")
         return ciphertext
 
     def decrypt(self, ciphertext, key : str):
@@ -61,7 +61,7 @@ class Cipher:
                 else:
                     continue
         
-        print(f"plaintext : {plaintext}")
+        print(f"plaintext : {plaintext} key : {self._key}")
         return plaintext
 
     def crack_cipher_random(self, ciphertext = "kotcihndotmivhonucswthvaifcnsa"):
@@ -88,6 +88,54 @@ class Cipher:
         total_time = end_time - start_time
         print(f"totla time : {total_time}")
 
+    def crack_cipher_random_until_target(self, ciphertext = "kotcihndotmivhonucswthvaifcnsa", target = "koreainformationsecurityagency"):
+        start_time = t.time()
+        key = ["a", "a", "a", "a", "a"]
+        count = 1
+        for a1 in self._alphabets:
+            key[0] = a1
+            for a2 in self._alphabets:
+                key[1] = a2
+                for a3 in self._alphabets:
+                    key[2] = a3
+                    for a4 in self._alphabets:
+                        key[3] = a4
+                        for a5 in self._alphabets:
+                            key[4] = a5
+
+                            print(f"count: {count} ", end="")
+                            plaintext = self.decrypt(ciphertext, "".join(key))
+                            if plaintext == target:
+                                end_time = t.time()
+                                total_time = end_time - start_time
+                                print(f"target found : {plaintext}")
+                                print(f"totla time : {total_time}")
+                                return plaintext
+                            count += 1
+
+        end_time = t.time()
+        total_time = end_time - start_time
+        print(f"totla time : {total_time}")
+
+    def crack_cipher_dictionary_until_target(self, ciphertext = "kotcihndotmivhonucswthvaifcnsa", target = "koreainformationsecurityagency"):
+        start_time = t.time()
+        count = 1
+        with open('dictionary.txt', 'r', encoding='utf-8') as f:
+            for key in f:
+                key = key.rstrip('\r\n')
+                print(f"count: {count} ", end="")
+                count += 1
+                plaintext = self.decrypt(ciphertext, key)
+                if plaintext == target:
+                    end_time = t.time()
+                    total_time = end_time - start_time
+                    print(f"target found : {plaintext}")
+                    print(f"total time : {total_time}")
+                    return plaintext
+        end_time = t.time()
+        total_time = end_time - start_time
+        print(f"total time : {total_time}")
+
     def crack_cipher_dictionary(self, ciphertext = "kotcihndotmivhonucswthvaifcnsa"):
         start_time = t.time()
         count = 1
@@ -101,9 +149,9 @@ class Cipher:
         total_time = end_time - start_time
         print(f"total time : {total_time}")
 
-        
+
 if __name__ == "__main__":
     c = Cipher()
     c.encrypt("monoalphabeticsubstitution", "month")
     c.decrypt("telxsehvthvmgpsiwhn", "value")
-    c.crack_cipher_dictionary()
+    c.crack_cipher_random_until_target()
