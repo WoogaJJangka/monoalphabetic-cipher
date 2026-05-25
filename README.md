@@ -56,7 +56,7 @@
 - **출력**: 평문
 - **처리**: 역방향 치환 테이블 사용
 
-#### 4. `crack_cipher_random(ciphertext, max_iterations=1000000)`
+#### 4. `crack_cipher_random(ciphertext)`
 - **기능**: 무작위 대입법을 이용한 암호 크래킹
 - **알고리즘**: 랜덤한 키를 생성하여 복호화 시도
 - **효율성**: 낮음, 시간이 오래 걸림

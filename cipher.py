@@ -1,5 +1,5 @@
 from collections import deque
-
+import time as t
 class Cipher:
     def __init__(self):
         self._key = ""
@@ -64,8 +64,46 @@ class Cipher:
         print(f"plaintext : {plaintext}")
         return plaintext
 
+    def crack_cipher_random(self, ciphertext = "kotcihndotmivhonucswthvaifcnsa"):
+        start_time = t.time()
+        key = ["a", "a", "a", "a", "a"]
+        count = 1
+        for a1 in self._alphabets:
+            key[0] = a1
+            for a2 in self._alphabets:
+                key[1] = a2
+                for a3 in self._alphabets:
+                    key[2] = a3
+                    for a4 in self._alphabets:
+                        key[3] = a4
+                        for a5 in self._alphabets:
+                            key[4] = a5
+                            
+                            print(f"count: {count} ", end="")
+                            self.decrypt(ciphertext, "".join(key))
+                            count += 1
 
+
+        end_time = t.time()
+        total_time = end_time - start_time
+        print(f"totla time : {total_time}")
+
+    def crack_cipher_dictionary(self, ciphertext = "kotcihndotmivhonucswthvaifcnsa"):
+        start_time = t.time()
+        count = 1
+        with open('dictionary.txt', 'r', encoding='utf-8') as f:
+            for key in f:
+                key = key.rstrip('\r\n')
+                print(f"count: {count} ", end="")
+                count += 1
+                self.decrypt(ciphertext, key)
+        end_time = t.time()
+        total_time = end_time - start_time
+        print(f"total time : {total_time}")
+
+        
 if __name__ == "__main__":
     c = Cipher()
     c.encrypt("monoalphabeticsubstitution", "month")
     c.decrypt("telxsehvthvmgpsiwhn", "value")
+    c.crack_cipher_dictionary()
